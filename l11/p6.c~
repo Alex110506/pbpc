@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define CHUNK 10
+
+char *citire(){
+  size_t size=CHUNK;
+  char *s=malloc(size);
+
+  char aux[CHUNK];
+
+  while(fgets(aux,CHUNK,stdin)){
+    if(strlen(aux)+strlen(s)>size){
+      size+=CHUNK;
+      s=realloc(s,size);
+    }
+
+    strcat(s,aux);
+
+    if(strchr(aux,'\n')){
+      break;
+    }
+  }
+
+  s=realloc(strlen(s));
+
+  return s;
+}
+
+char *text2hex(const char *s){
+
+}
+
+int main(){
+
+}

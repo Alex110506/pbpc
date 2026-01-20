@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+FILE *fin=NULL;
+FILE *fout=NULL;
+
+int copypaste(const char *src, const char *dest){
+  if((fin=fopen(src,"rb"))==NULL){
+    perror("eroare la deschidere citire");
+    return 0;
+  }
+
+  if((fout=fopen(dest,"wb"))==NULL){
+    perror("eroare la deschidere scriere");
+    return 0;
+  }
+
+  char aux[4096];
+  size_t bytesCititi;
+
+  while((bytesCititi=fread(aux,1,sizeof(aux),fin))>0){
+    fwrite(aux,1,bytesCititi,fout);
+  }
+
+  fclose(fin);
+  fclose(fout);
+  return 1;
+}
+
+int main(){
+  const char *src="integers.bin";
+  const char *dest="ex3.bin";
+
+  copypaste(src,dest);
+
+  return 0;
+}

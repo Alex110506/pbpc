@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int main(){
+  int capa=sizeof(int);
+  int *num=NULL;
+  int *p=num;
+
+  int n=0;
+
+  int x=0;
+  
+  while(scanf("%d",&x)==1){
+    capa+=sizeof(int);
+    num=realloc(num,capa);
+
+    *p=x;
+    p++;
+    n++;
+  }
+
+  for(int i=0 ; i<n ; i++){
+    printf("%d ",num[i]);
+  }
+}

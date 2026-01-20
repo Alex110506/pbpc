@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+typedef struct{
+  char nume[101];
+  int varsta;
+}pers;
+
+void f(pers *p){
+  p->nume[0]=toupper(p->nume[0]);
+  for(int i=1 ; i<strlen(p->nume) ; i++){
+    p->nume[i]=tolower(p->nume[i]);
+  }
+  return;
+}
+
+int main(){
+  pers p;
+  scanf("%s %d",p.nume,&p.varsta);
+
+  f(&p);
+
+  printf("%s",p.nume);
+}

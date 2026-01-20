@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+char *string_replace_dynamic(const char *where, const char *what, const char *replace){
+  char *p=NULL;
+  char aux[101]=NULL;
+
+  char *found=strstr(where,what);
+  
+  while(found){
+    strncpy(aux,where,found-where);
+    strcat(aux,replace);
+    p=realloc(p,strlen(aux));
+    strcpy(p,aux);
+    found=strstr(where,what);
+  }
+
+  return p;
+}
+
+
+int main(){
+  char s1[] = "Acesta este un string si un string este terminat cu 0x00";
+  char s2[] = "string";
+  char s3[] = "sir de caractere";
+  char *p=string_replace(s1, s2, s3);
+  printf("%s",p);
+}

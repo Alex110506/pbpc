@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+typedef enum{
+  frontala,verticala
+}tip_incarcare;
+
+typedef struct{
+  int capacitate;
+  char clasa;
+  char programe[101];
+}frontala;
+
+typedef struct{
+  char afisaj[101];
+  int nr_prog;
+  char selector[101];
+  int zgomot;
+}verticala;
+
+typedef union{
+  verticala vert;
+  frontala front;
+}Detalii;
+
+typedef struct{
+  char producator[101];
+  char model[101];
+  float pret_furn;
+  float pret_vanz;
+  float greutate;
+  tip_incarcare incarcare;
+  Detalii detalii;
+}masina;
+
+int main(){
+  printf("Selectati variantele:\n");
+  printf("1 - Citire\n2 - Adaugare\n3 - Afisare\n4 - Creare fisier oferta\n5 - Cauta dupa greutate\n7 - Afisare dupa producator\n8 - Iesire\n");
+
+  int ok=1;
+  int alegere;
+  while(ok){
+    printf("introduceti alegerea: ");
+    sacnf("%d",&alegere);
+    printf("\n");
+    if(alegere<1 || alegere>8)
+      ok=0;
+
+    switch(alegere){
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    case 7:
+      break;
+    case 8:
+      ok=0;
+      break;
+    default:
+      break;
+    }
+  }
+}

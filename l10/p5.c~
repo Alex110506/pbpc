@@ -1,0 +1,167 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_ANIMALE 100
+
+typedef enum {
+    INSECTA,
+    PASARE,
+    MAMIFER,
+    PESTE
+} TipAnimal;
+
+typedef enum {
+    CARNIVOR,
+    IERBIVOR,
+    OMNIVOR
+} TipHrana;
+
+typedef struct {
+    int nrPicioare;
+    int durataViataZile;
+} Insecta;
+
+typedef struct {
+    float vitezaZbor;
+    float lungimeAripi;
+} Pasare;
+
+typedef struct {
+    float greutate;
+    float inaltime;
+    TipHrana dieta;
+} Mamifer;
+
+typedef struct {
+    float greutate;
+    float adancimeMax;
+    float salinitate;
+} Peste;
+
+typedef union {
+    Insecta insecta;
+    Pasare pasare;
+    Mamifer mamifer;
+    Peste peste;
+} Detalii;
+
+typedef struct {
+    char nume[50];
+    TipAnimal tip;
+    Detalii detalii;
+} Animal;
+
+void adaugareAnimal(Animal v[], int *n){
+  Animal a;
+  scanf("%s %d",a.nume,&a.tip);
+
+  switch (a.tip) {
+  case INSECTA:
+    printf("Nr picioare: "); scanf("%d", &a.detalii.insecta.nrPicioare);
+    printf("Durata viata (zile): "); scanf("%d", &a.detalii.insecta.durataViataZile);
+    break;
+  case PASARE:
+    printf("Viteza zbor: "); scanf("%f", &a.detalii.pasare.vitezaZbor);
+    printf("Lungime aripi: "); scanf("%f", &a.detalii.pasare.lungimeAripi);
+    break;
+  case MAMIFER:
+    printf("Greutate: "); scanf("%f", &a.detalii.mamifer.greutate);
+    printf("Inaltime: "); scanf("%f", &a.detalii.mamifer.inaltime);
+    printf("Dieta (0-Carnivor, 1-Ierbivor, 2-Omnivor): ");
+    int d;
+    scanf("%d", &d);
+    a.detalii.mamifer.dieta = (TipHrana)d;
+    break;
+  case PESTE:
+    printf("Greutate: "); scanf("%f", &a.detalii.peste.greutate);
+    printf("Adancime max: "); scanf("%f", &a.detalii.peste.adancimeMax);
+    printf("Salinitate (%%): "); scanf("%f", &a.detalii.peste.salinitate);
+    break;
+  default:
+    printf("Tip invalid!\n");
+    return;
+  }
+
+  v[n]=a;
+  (*n)++;
+}
+
+void printeazaAnimale(Animal v[], int n) {
+  printf("\n--- Lista Animale ---\n");
+  for (int i = 0; i < n; i++) {
+    printf("%d. Nume: %s | ", i + 1, v[i].nume);
+
+    // We MUST use switch to interpret the Union correctly
+    switch (v[i].tip) {
+    case INSECTA:
+      printf("[Insecta] Picioare: %d, Viata: %d zile\n", 
+	     v[i].detalii.insecta.nrPicioare, 
+	     v[i].detalii.insecta.durataViataZile);
+      break;
+    case PASARE:
+      printf("[Pasare] Viteza: %.2f, Aripi: %.2f\n", 
+	     v[i].detalii.pasare.vitezaZbor, 
+	     v[i].detalii.pasare.lungimeAripi);
+      break;
+    case MAMIFER:
+      printf("[Mamifer] Greutate: %.2f, Inaltime: %.2f, Dieta: ", 
+	     v[i].detalii.mamifer.greutate, 
+	     v[i].detalii.mamifer.inaltime);
+      // Decode the diet enum
+      if (v[i].detalii.mamifer.dieta == CARNIVOR) printf("Carnivor\n");
+      else if (v[i].detalii.mamifer.dieta == IERBIVOR) printf("Ierbivor\n");
+      else printf("Omnivor\n");
+      break;
+    case PESTE:
+      printf("[Peste] Greutate: %.2f, Adancime: %.2f, Salinitate: %.2f%%\n", 
+	     v[i].detalii.peste.greutate, 
+	     v[i].detalii.peste.adancimeMax, 
+	     v[i].detalii.peste.salinitate);
+      break;
+    default:
+      printf("Tip necunoscut\n");
+    }
+  }
+}
+
+
+void sterge(char nume[], int *n, char v[]){
+  int gs=0;
+
+  for(int i=0 ; i<(*n) ; i++){
+    if(strcmp(nume,v[i])==0){
+      for(int j=i+1 ; j<n ; j++){
+	v[j-1]=v[j];
+      }
+      (*n)--;
+      gs=1;
+      break;
+    }
+  }
+  if(gs){
+    printf("Animal sters");
+  }else{
+    printf("Nu a fost gasit");
+  }
+}
+
+int main(){
+  int n=0;
+  Animal v[101];
+
+  scanf("%d",&n);
+
+  for(int i=0 ; i<n ; ){
+    adaugareAnimal(v,&i);
+  }
+
+  printeazaAnimale(v,n);
+
+  char nume[101];
+  scanf("%s",nume);
+
+  sterge(nume,&n,v);
+
+  printeazaAnimale(v,n);
+}

@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char *string_replace(const char *where, const char *what, const char *replace){
+  char final_len=strlen(where) - strlen(what) + strlen(replace);
+
+  char *res=malloc(final_len);
+
+  char *found;
+  const char *ptr_where=where;
+  char *ptr_res=res;
+
+  while((found=strstr(ptr_where,what))){
+    strncpy(ptr_res,ptr_where,(strlen(ptr_where)-strlen(found)));
+    ptr_res+=(strlen(ptr_where)-strlen(found));
+    
+    strcpy(ptr_res,replace);
+
+    ptr_res+=strlen(replace);
+
+    ptr_where=found+strlen(what);
+  }
+
+  strcpy(ptr_res,ptr_where);
+
+  return res;
+}
+
+int main(){
+  char *s1="Acesta este un string si un string este terminat";
+  char *s2="string";
+  char *s3="sir de caractere";
+
+  char *p=string_replace(s1,s2,s3);
+
+  printf("%s",p);
+}

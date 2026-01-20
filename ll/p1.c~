@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define CHUNK 10
+
+FILE *finProp;
+FILE *finCuv;
+FILE *fout;
+
+char **cuvinte;
+int nrCuv=0;
+
+char *citire(char *filepath){
+  size_t size=CHUNK;
+
+  if((finProp=fopen(filepath,"rt"))==NULL){
+    printf("eroare");
+    exit(1);
+  }
+  
+  char *s=malloc(CHUNK);
+  char aux[CHUNK];
+
+  s[0]=0;
+
+  while((fgets(aux,CHUNK,fin))){
+    aux[strcspn(aux,'\n')]=0;
+
+    if(strlen(aux)==0)
+      continue;
+
+    if(strlen(aux)+strlen(s)+1>size){
+      size+=CHUNK;
+      s=realloc(s,size);
+    }
+
+    strcat(s,aux);
+  }
+
+  s=realloc(s,strlen(s)+1);
+
+  if((fclose(fin))==NULL){
+    printf("erorae");
+    exit(1);
+  }
+
+  return s;
+}
+
+void *citireCuv(){
+  char *cuvs=citire("cuvinte.txt");
+
+  char *p=strtok(p," ");
+
+  while(p){
+    char *cuvant=malloc(strlen(p)+1);
+    strcpy(cuvant,p);
+    cuvinte=realloc(cuvinte,(nrCuv+1)*sizeof(char *));
+    cuvinte[nrCuv]=cuvant;
+    nrCuv++;
+
+    p=strtok(NULL, " ");
+  }
+
+  return
+}
+
+int main(){
+  citireCuv();
+
+  for(int i=0 ; i<nrCuv ; i++){
+    printf("%s",cuvinte[i]);
+  }
+  
+}

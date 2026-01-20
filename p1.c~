@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+#define CHUNK 10
+
+char *citire(){
+  int size=1;
+  char *s=malloc(size);
+  s[0]='\n';
+  char aux[101];
+  while(getline(aux,CHUNK)){
+    if(size+strlen(aux)>=CHUNK){
+      size+=CHUNK;
+      s=realloc(s,CHUNK);
+    }
+    strcat(s,aux);
+  }
+
+  s=realloc(s,strlen(s));
+  printf("size %lu --\n",sizef(s)*8);
+  return s;
+}
+
+int main(){
+  char *p=NULL;
+  p=citire();
+  printf("%s\n",p);
+  free(p);
+  return 0;
+}

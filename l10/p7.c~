@@ -1,0 +1,90 @@
+#include <stdio.h>
+
+typedef enum{
+  stick,
+  baterie;
+}produs;
+
+typedef enum{
+  A,C
+}interfata;
+
+typedef struct{
+  int capacitate;
+  interfata inter;
+}stick;
+
+typedef struct{
+  int voltaj;
+}baterie;
+
+typedef union{
+  baterie bat;
+  stick sti;
+}detalii;
+
+typedef struct{
+  char id[101];
+  float pret;
+  int stoc;
+  produs tip;
+  detalii det;
+}elem;
+
+void introducere(elem v[], int *n){
+  elem aux;
+  printf("introdu id:\n");
+  scanf("%s",aux.id);
+
+  for(int i=0 ; i<n ; i++){
+    if(strcmp(aux.id,v[i].id)==0){
+      v[i].stoc++;
+      printf("produs existent, stoc actualizat\n");
+      return;
+    }
+  }
+
+  printf("introdu pret, stoc, tip produs(0 - stick, 1 - baterie)\n");
+
+  scanf("%f %d %d",&aux.pret,&aux.stoc,(int*)&aux.tip);
+
+  switch(aux.tip){
+  case stick:
+    printf("capacitate si interfata (A sau C)\n");
+    char c='A';
+    scanf("%d %c",&aux.det.sti.capacitate,&c);
+    aux.det.sti.interfata = c=='A' ? 0 : 1;
+    break;
+  case baterie:
+    printf("voltaj\n");
+    sacnf("%d",&aux.det.bat.voltaj);
+    break;
+  default:
+    printf("tip necunoscut\n";)
+  }
+
+  v[*n]=aux;
+  (*n)++;
+  return;
+}
+
+void sterg(elem v[],const int n,const char cod[]){
+  for(int i=0 ; i<n ; i++){
+    if(strcmp(v[i].id,cod)==0){
+      if(v[i].stoc!=0){
+	v[i].stoc--;
+	printf("stocul a fost decrementat");
+	return;
+      }else{
+	printf("produsul este deja epuizat");
+	return;
+      }
+    }
+  }
+
+  printf("produsul nu a fost gasit");
+}
+
+int main(){
+  return 0;
+}

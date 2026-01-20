@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define CHUNK 100
+
+FILE *fin=NULL;
+FILE *fout=NULL;
+
+int litere[26];
+
+void verifLit(char *linie){
+  int idx=0;
+  while(idx<strlen(linie)){
+    if(isalpha(linie[idx])){
+      litere[tolower(linie[idx])-'a']++;
+    }
+    idx++;
+  }
+  return;
+}
+
+void eliberare(){
+  if(fin) fclose(fin);
+  if(fout) fclose(fout);
+}
+
+char *citire(){
+  int size=CHUNK;
+  char *s=malloc(size);
+  s[0]='\0';
+
+  char aux[CHUNK];
+  while(fgets(aux,CHUNK,fin)){
+    if(strlen(s)+strlen(aux)+1>size){
+      size+=CHUNK;
+      char *tt=realloc(s,size);
+      if(tt==NULL){
+	printf("nu exista memeorie");
+	eliberare();
+	free(s);
+	exit(EXIT_FAILURE);
+      }
+
+      s=tt; 
+    }
+    strcat(s,aux);
+
+    verifLit(aux);
+  }
+
+  s=realloc(s,(strlen(s)+1)*sizeof(char));
+  return s;
+}
+
+int main(){
+  if((fin=fopen("scrisoare.txt","r"))==NULL){
+    printf("nu poate fi deschis fis de cit");
+    exit(EXIT_FAILURE);
+  }
+
+  char *linie=citire();
+
+  int total=0;
+  for(int i=0 ; i<26 ; i++){
+    total+=litere[i];
+  }
+
+  for(int i=0 ; i<26 ; i++){
+    float proc=((float)litere[i]/total)*100;
+    printf("%c - %.2f %%\n",'a'+i,proc);
+  }
+
+  printf("%s",linie);
+
+  free(linie);
+  eliberare();
+}

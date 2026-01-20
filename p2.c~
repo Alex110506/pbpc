@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main(){
+  int *v=NULL;
+  int n=0;
+  int x=1;
+
+  while(x){
+    scanf("%d",&x);
+
+    if(x){
+      n++;
+      v=realloc(v,n*sizeof(int));
+      v[n-1]=x;
+    }
+  }
+
+  for(int i=n-1; i>=0 ; i--)
+    printf("%d ",v[i]);
+}

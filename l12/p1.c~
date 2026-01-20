@@ -1,0 +1,142 @@
+#include <stdio.h>
+
+typedef struct{
+  char title[101];
+  int year;
+  float budget;
+}film;
+
+FILE *fin;
+FILE *fout;
+
+film *filme=NULL;
+int nrFilme=0;
+char sep[]=",";
+
+void eliberare(){
+  for(int i=0 ; i<nrFilme ; i++)
+    free(filme[i]);
+  free(filme);
+  fclose(fout);
+  fclose(fin);
+}
+
+void adaugare(char *linie){
+  if(strlen(linie)>1){
+    film *aux=(film*)realloc(filme,(nrFilme+1)*sizeof(film));
+    if(!aux){
+      printf("memeoria insufucienta");
+      eliberare();
+      exit(EXIT_FAILURE);
+    }
+
+    filme=aux;
+    nrFilme++;
+  }
+  char *p=strtok(linie,sep);
+  int idx=0;
+  film ff;
+  
+  while(p){
+    switch(idx){
+    case 0:
+      int an=atoi(p);
+      ff.year=an;
+      break;
+    case 2:
+      strcpy(ff.nume,p);
+      break;
+    case 6:
+      int buget=atof(p);
+      ff.budget=buget;
+      break;
+    default:
+      break;
+    }
+
+    idx++;
+    p=strtok(NULL,sep);
+  }
+
+  filme[nrFilme-1]=ff;
+  return;
+}
+
+int cmp1(film f1, film f2){
+  if(f1.year<f2.year)
+    return 1;
+  return 0;
+}
+
+int cmp2(film f1, film f2){
+  if(strcmp(f1.name,f2.name)<=0)
+    return 1;
+  return 0;
+}
+
+int cmp3(film f1, film f2){
+  if(f1.budget<=f2.budget)
+    return 1;
+  return 0;
+}
+
+
+int main(){
+  
+  int n=0,i=0;
+  if((fin=fopen("filme.csv","rt"))==NULL){
+    printf("fisierul nu a putut fi deschis");
+    exit(EXIT_FAILURE);
+  }
+
+  char *linie=NULL;
+  
+  while(fgets(linie,1000,fin)!=NULL){
+    adaugare(linie);
+  }
+
+  qsort(filme,nrFilme,sizeof(film),cmp1);
+  
+  if((fout=fopen("out1.txt","wt"))==NULL){
+    printf("fisierul de ierisre nu poate fi dsechis");
+    exit(EXIT_FAILURE);
+  }
+
+  for(int i=0 ; i<nrFilme ; i++){
+    fprintf("%s %d %f",filme[i].name,filme[i].year,filme[i].budget)
+  }
+  fclose(fout);
+
+
+
+  qsort(filme,nrFilme,sizeof(film),cmp1);
+  
+  if((fout=fopen("out1.txt","wt"))==NULL){
+    printf("fisierul de ierisre nu poate fi dsechis");
+    exit(EXIT_FAILURE);
+  }
+
+  for(int i=0 ; i<nrFilme ; i++){
+    fprintf("%s %d %f",filme[i].name,filme[i].year,filme[i].budget)
+  }
+  fclose(fout);
+
+
+
+  qsort(filme,nrFilme,sizeof(film),cmp1);
+  
+  if((fout=fopen("out1.txt","wt"))==NULL){
+    printf("fisierul de ierisre nu poate fi dsechis");
+    exit(EXIT_FAILURE);
+  }
+
+  for(int i=0 ; i<nrFilme ; i++){
+    fprintf("%s %d %f",filme[i].name,filme[i].year,filme[i].budget)
+  }
+  fclose(fout);
+
+
+  eliberare();
+  return 0;
+  
+}

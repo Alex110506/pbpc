@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdint.h>
+
+typedef struct{
+  uint16_t an;
+  uint8_t luna;
+  uint8_t zi;
+  uint8_t idx;
+  int16_t valoare;
+}senzor;
+
+FILE *fin=NULL;
+FILE *fout=NULL;
+
+void creare_fis(){
+  if((fout=fopen("test.bin","wb"))==NULL){
+    printf("nu paote fi deschis fis");
+    exit(EXIT_FAILURE);
+  }
+
+  senzor s1[]={{2000,12,11,1,888},{2000,12,11,1,-333},{2000,12,11,1,823},{2000,12,11,2,823},{2000,12,11,2,1823},{2000,12,11,2,-823},{2000,12,11,3,8232},{2000,12,11,3,1823},{2000,12,11,3,8231},{2000,12,11,3,8123},{2000,12,11,1,23}};
+
+  if(fwrite(s1,sizeof(senzor),11,fout)==11){
+    printf("a fost scris cu succes");
+  }
+  
+}
+
+
+int main(){
+  creare_fis();
+
+  return 0;
+}

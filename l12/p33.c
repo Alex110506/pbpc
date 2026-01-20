@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct{
+  char judet[101];
+  int ben;
+  int suma;
+}Indemn;
+
+FILE *fin=NULL;
+FILE *fout=NULL;
+
+Indemn *ind=NULL;
+int nrInd=0;
+
+void parse_line(char *s){
+  char *p=strtok(s,";");
+  Indemn aux;
+
+  int idx=0;
+
+  ind=realloc(ind,sizeof(Indemn)*(nrInd+1));
+  if(!ind){
+    free(ind);
+    exit(1);
+  }
+
+  while(p){
+    int nr=0;
+    
+    switch(idx){
+    case 0:
+      strcpy(aux.judet,p);
+      break;
+    case 1:
+      nr=atoi(p);
+      aux.ben=nr;
+      break;
+    case 4:
+      nr=atoi(p);
+      aux.suma=nr;
+      break;
+    default:
+      break;
+    }
+
+    idx++;
+    p=strtok(NULL,";");
+  }
+
+  nrInd++;
+  ind[nrInd-1]=aux;
+
+  return;
+}
+
+int main(){
+  char *line=NULL;
+  size_t size=0;
+
+  if((fin=fopen("indemnizatie.csv","rt"))==NULL){
+    printf("plm");
+    return 1;
+  }
+
+  while((getline(&line,&size,fin))>0){
+    parse_line(line);
+  }
+
+  if((fout=fopen("mena.txt","wt")))
+
+  for(int i=0 ; i<nrInd ; i++){
+    fprintf(fout,"%s\n",ind[i].judet);
+  }
+}

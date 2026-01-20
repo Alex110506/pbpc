@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <math.h>
+
+typedef struct comp{
+  int re,im;
+}com;
+
+com adunare(com c1, com c2){
+  com c3;
+  c3.re=c1.re+c2.re;
+  c3.im=c1.im+c2.im;
+
+  return c3;
+}
+
+com scadere(com c1, com c2){
+  com c3;
+  c3.re=c1.re-c2.re;
+  c3.im=c1.im-c2.im;
+
+  return c3;
+}
+
+com inmultire(com c1,com c2){
+  com c3;
+  c3.re=c1.re*c2.re-c1.im*c2.im;
+  c3.im=c1.re*c2.im+c1.im*c2.re;
+
+  return c3;
+}
+
+double modul(com c){
+  double res=sqrt(c.re*c.re+c.im*c.im);
+  return res;
+}
+
+int main(){
+  com c1,c2;
+  
+  scanf("%d %d %d %d",c1.re,c1.im,c2.re,c2.im);
+
+  com r=adunare(c1,c2);
+  printf("%d %d*i",r.re,r.im);
+
+  com r=scadere(c1,c2);
+  printf("%d %d*i",r.re,r.im);
+
+  com r=inmultire(c1,c2);
+  printf("%d %d*i",r.re,r.im);
+
+  com r=modul(c1);
+  printf("%d %d*i",r.re,r.im);
+  
+  return 0;
+}
