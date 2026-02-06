@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+char *string_replace(char *where, char *what, char *replace){
+  char *new=NULL;
+  char *pnew=new;
+  char *p=NULL;
+  while((p=strstr(where,what))){
+    new=realloc(new,strlen(new)+strlen(replace)+1);
+    
+    int len=strlen(where)-strlen(p);
+    strncpy(pnew,aux,len);
+    pnew+=len;
+    where+=len;
+    strcat(pnew,replace);
+    pnew+=strlen(replace);
+    where+=strlen(what);
+  }
+
+  return new;
+}
+
+int main(){
+  char *s="Acesta este un string si un string se termina in 0x00";
+  char *s1=string_replace(s,"string","penis mare");
+
+  printf("%s",s1);
+}

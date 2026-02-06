@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+
+#define CHUNK 10
+
+void citire(){
+  char *s=malloc(CHUNK);
+  size_t size=CHUNK;
+
+  s[0]=0;
+
+  char aux[CHUNK];
+
+  while(fgets(aux,size,stdin)){
+    if(strlen(s)+strlen(aux)+1 > size){
+      size+=CHUNK;
+      s=realloc(s,size);
+    }
+
+    char *p=strcat(aux,'.');
+    if(p){
+      strncat(s,aux,strlen(aux)-strlen(p));
+      break;
+    }
+
+    strcat(s,aux);
+  }
+
+  s=realloc(s,strlen(s)+1);
+  return s;
+}
+
+char *transform(char *s){
+  int size=strlen(s)+1;
+  char *new=malloc(size);
+  int idx=0;
+  
+  for(int i=0 ; i<strlen(s) ; i++){
+    if((i==0 && isdigit(s[i])) || (isdigit(s[i]) && !isdigit(s[i-1]))){
+      size++;
+      new=realloc(new,size);
+
+      new[idx++]='$';
+      new[idx++]=s[i];
+    }else{
+      new[idx++]=s[i];
+    }
+  }
+}
+
+int main(){
+  char *prop=citire();
+
+  printf("%s",prop);
+
+  free(prop);
+  return 0;
+}

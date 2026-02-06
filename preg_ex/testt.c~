@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main(){
+  char aux[100]="pula in pizda";
+
+  FILE *fout =fopen("mena.bin","wb");
+  FILE *fin =fopen("mena.bin","rb");
+  
+  fwrite(aux,1,100,fout);
+
+  char auxxx[100];
+  fread(auxxx,1,100,fin);
+
+  printf("%s",auxxx);
+}

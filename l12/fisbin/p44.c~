@@ -1,0 +1,73 @@
+#include <stdio.h>
+
+typedef enum{
+  frontala,verticala
+}Incarcare;
+
+typedef struct{
+  int capacitate;
+  char clasa;
+  char *programe;
+}Frontala;
+
+typedef struct{
+  char *afisaj;
+  int nrProg;
+  char *selector;
+  int nivelZgomot;
+}Verticala;
+
+
+typedef union{
+  Frontala frontala;
+  Verticala verticala;
+}Detalii;
+
+typedef struct{
+  char *producator;
+  char *model;
+  int pret_furn;
+  int pret_vanz;
+  int greutate;
+  Incarcare incarcare;
+  Detalii detalii;
+}Masina;
+
+void adaugare(char *pathname){
+  FILE *fout=NULL;
+
+  fout=fopen(pathname,"ab");
+
+  char producator[101],model[101];
+  int pret_furn=0,pret_vanz=0,greutate=0;
+  Incarcare incarcare=0;
+  scanf("%s %s %d %d %d %d",producator,model,&pret_furn,&pret_vanz,&greutate,(int*)&incarcare);
+
+  Masina aux;
+  aux.producator=malloc(strlen(prodcuator)+1);
+  strcpy(aux.producator,producator);
+
+  aux.model=malloc(strlen(model)+1);
+  strcpy(aux.model,model);
+
+  aux.pret_furn=pret_furn;
+  aux.pret_vanz=pret_vanz;
+  aux.greutate=greutate;
+  aux.incarcare=incarcare;
+  
+  
+  switch(incarcare){
+  case frontala:
+    scanf("%d %c %s",&(aux.detalii.frontala.capacitate),&(aux.detalii.frontala.clasa),aux.detalii.frontala.programe);
+    break;
+  default:
+    scanf("%s %d %s %d",aux.detalii.verticala.afisaj,&(aux.detalii.verticala.nrProg),aux.detalii.verticala.selector,&(aux.detalii.verticala.nivelZgomot));
+    break;
+  }
+
+  fwrite(aux,sizeof(Masina),1,fout);
+}
+  
+int main(){
+  adaugare("magazin1.bin");
+}

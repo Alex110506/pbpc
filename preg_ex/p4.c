@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int spec(int nr){
+  int sum=0;
+  for(int i=1 ; i<nr ; i++){
+    if(nr%i==0)
+      sum+=i;
+  }
+
+  if(nr<sum)
+    return 1;
+  return 0 ;
+}
+
+int citire(int *arr) {
+    int size = 0, x = 0;
+    char sep = ' ';
+
+    // Read integer and the character immediately following it
+    while (scanf("%d%c", &x, &sep) == 2) {
+        arr[size] = x;
+        size++;
+        
+        // Stop if the separator was a newline
+        if (sep == '\n') break; 
+    }
+    return size;
+}
+
+void sortare(int *arr, int size){
+  for(int i=0 ; i<size ; i++){
+    for(int j=i+1 ; j<size ; j++){
+      if(arr[i]>arr[j]){
+	int aux=arr[i];
+	arr[i]=arr[j];
+	arr[j]=aux;
+      }
+    }
+  }
+
+  return;
+}
+
+int *inter(int *arr1, int *arr2, int size1, int size2, int *finalSize){
+  int i=0,j=0;
+  int idx=0;
+
+  int *arr=NULL;
+  int size=0;
+  
+  while(i<size1 && j<size2){
+    if(arr1[i]<arr2[j]){
+      if(spec(arr1[i])){
+	arr=realloc(arr,sizeof(int) * (idx+1));
+	arr[idx++]=arr1[i];
+      }
+      i++;
+    }else{
+      if(arr2[j]<arr1[i]){
+	if(spec(arr2[j])){
+	  arr=realloc(arr,sizeof(int) * (idx+1));
+	  arr[idx++]=arr2[j];
+	}
+	j++;
+      }else{
+	if(spec(arr1[i])){
+	  arr=realloc(arr,sizeof(int) * (idx+1));
+	  arr[idx++]=arr1[i];
+	}
+	i++,j++;
+      }
+    }
+  }
+
+  while(i<size1){
+    if(spec(arr1[i])){
+      arr=realloc(arr,sizeof(int) * (idx+1));
+      arr[idx++]=arr1[i];
+    }
+    i++;
+  }
+
+  while(j<size2){
+    if(spec(arr2[j])){
+      arr=realloc(arr,sizeof(int) * (idx+1));
+      arr[idx++]=arr2[j];
+    }
+    j++;
+  }
+
+  *finalSize=idx;
+  return arr;
+}
+
+int main(){
+  int arr1[101],arr2[101];
+  int size1=citire(arr1);
+  int size2=citire(arr2);
+  sortare(arr1,size1);
+  sortare(arr2,size2);
+
+  int idx=0;
+
+  int *nrs=inter(arr1,arr2,size1,size2,&idx);
+  for(int i=0 ; i<idx ; i++){
+    printf("%d ",nrs[i]);
+  }
+
+  return 0;
+}

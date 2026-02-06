@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main(){
+  char *s1=NULL;
+  char *s2=NULL;
+
+  size_t size=0;
+
+  getline(&s1,size,stdin);
+  getline(&s2,size,stdin);
+
+
+  printf("%s %s",s1,s2);
+}

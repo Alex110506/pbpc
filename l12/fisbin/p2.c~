@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int citire(int *arr, char *pathname){
+  FILE *fin=NULL;
+
+  if(!(fin=fopen(pathname,"rb"))){
+    fprintf(stderr,"eroare citire");
+    exit(1);
+  }
+  
+  int n=0,size=0;
+  
+  while(fread(&n,sizeof(int),1,fin)==1){
+    arr=realloc(arr,(size+1)*sizeof(int));
+    arr[size]=n;
+    size++;
+  }
+
+  return size;
+}
+
+int main(){
+  int *arr=NULL;
+  int size=citire(arr,"integers.bin");
+
+  for(int i=0 ; i<size ; i++){
+    printf("%d ",arr[i]);
+  }
+
+  free(arr);
+  return 0;
+}

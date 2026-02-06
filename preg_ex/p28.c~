@@ -1,0 +1,79 @@
+#include <stdio.h>
+
+typedef struct{
+  int zi;
+  int luna;
+  int an;
+}Data;
+
+typedef struct{
+  float eur;
+  Data data;
+}Curs;
+
+int cmp(Data a, Data b){
+  if(a.zi==b.zi && a.luna==b.luna && a.an==b.an)
+    return 1;
+  return 0;
+}
+
+int main(int argc, char **argv){
+  FILE *fin;
+  FILE *fout;
+
+  Curs *lista=NULL;
+  int size=0;
+
+  if((fin=fopen(argv[1],"rt"))==0){
+    printf("eroare fisier");
+    return 1;
+  }
+
+  if((fout=fopen(argv[2],"wt"))==0){
+    printf("eroare fisier");
+    return 1;
+  }
+
+  char z1,z2,l1,l2;
+  Curs aux;
+
+  while(fscanf(fin,"%c%c.%c%c.%d;%f;",&z1,&z2,&l1,&l2,aux.data.an,aux.eur)){
+    int zi=(z1-'0')*10+(z2-'0');
+    int luna=(l1-'0')*10+(l2-'0');
+
+    aux.data.zi=zi;
+    aux.data.luna=luna;
+
+    lista=realloc(lista,(size+1)*sizeof(Curs));
+    lista[size]=aux;
+    size++;
+  }
+
+  if(fclose(fin)){
+    printf("eroare fisier");
+    return 1;
+  }
+
+  Data d;
+  char *s=argv[3];
+  d.zi=atoi(s);
+  s+=3;
+  d.luna=atoi(s);
+  s+=3;
+  d.an=atoi(s);
+
+  for(int i=0 ; i<size ; i++){
+    if(cmp(lista[i].data,d)==1){
+      fprintf(fout,"%f",lista[i].eur);
+    }
+  }
+
+  if(fclose(fout)){
+    printf("eroare fisier");
+    return 1;
+  }
+
+  free(lista);
+  return 0;
+  
+}
